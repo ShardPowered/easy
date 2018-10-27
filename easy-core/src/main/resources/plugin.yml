@@ -1,0 +1,3 @@
+name: Easy
+main: me.tassu.easy.EasyLoadingPlugin
+version: ${pluginVersion}
