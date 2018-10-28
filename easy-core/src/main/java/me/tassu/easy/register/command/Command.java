@@ -69,6 +69,8 @@ public abstract class Command extends org.bukkit.command.Command implements IReg
                 throw new MissingPermissionException(permission);
             }
 
+            check(sender, commandLabel, Lists.newArrayList(args)); // for abstract commands
+
             run(sender, commandLabel, Lists.newArrayList(args));
         } catch (MissingPermissionException ex) {
             messenger.sendMissingPermissionMessage(sender, ex.getPermission());
@@ -79,6 +81,8 @@ public abstract class Command extends org.bukkit.command.Command implements IReg
         return true;
     }
 
-    public abstract void run(CommandSender sender, String label, List<String> args) throws CommandException;
+    @SuppressWarnings({"WeakerAccess", "RedundantThrows", "unused"})
+    protected void check(CommandSender sender, String label, List<String> args) throws CommandException {}
+    protected abstract void run(CommandSender sender, String label, List<String> args) throws CommandException;
 
 }

@@ -24,13 +24,16 @@
 
 package me.tassu.easy.api.binder;
 
+import com.google.inject.Binder;
 import me.tassu.easy.api.message.IMessageProvider;
 import me.tassu.easy.api.message.SimpleMessageProvider;
 
-public class Binder {
+public class BindManager {
 
     public Class<? extends IMessageProvider> getMessageProvider() {
         return SimpleMessageProvider.class;
     }
+
+    public void bindCustom(Binder binder) {}
 
 }

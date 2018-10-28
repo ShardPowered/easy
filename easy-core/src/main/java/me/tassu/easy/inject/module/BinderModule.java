@@ -24,26 +24,19 @@
 
 package me.tassu.easy.inject.module;
 
-import com.google.common.reflect.TypeToken;
 import com.google.inject.AbstractModule;
 import lombok.AllArgsConstructor;
-import lombok.val;
-import me.tassu.cfg.ConfigFactory;
-import me.tassu.cfg.impl.HoconConfigFactory;
-import me.tassu.easy.EasyPlugin;
-import me.tassu.easy.api.binder.Binder;
+import me.tassu.easy.api.binder.BindManager;
 import me.tassu.easy.api.message.IMessageProvider;
-import me.tassu.easy.config.VectorSerializer;
-import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
-import org.bukkit.util.Vector;
 
 @AllArgsConstructor
 public class BinderModule extends AbstractModule {
 
-    private Binder binder;
+    private BindManager bindManager;
 
     @Override
     protected void configure() {
-        bind(IMessageProvider.class).to(binder.getMessageProvider());
+        bind(IMessageProvider.class).to(bindManager.getMessageProvider());
+        bindManager.bindCustom(binder());
     }
 }

@@ -28,8 +28,9 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
+import lombok.Getter;
 import lombok.val;
-import me.tassu.easy.api.binder.Binder;
+import me.tassu.easy.api.binder.BindManager;
 import me.tassu.easy.inject.module.BinderModule;
 import me.tassu.easy.inject.module.BukkitModule;
 import me.tassu.easy.inject.module.ConfigModule;
@@ -59,6 +60,7 @@ public abstract class EasyPlugin extends JavaPlugin {
     protected void init() {}
     protected void stop() {}
 
+    @Getter
     private Set<IRegistrable> registrableSet = new HashSet<>();
 
     @Override
@@ -88,8 +90,8 @@ public abstract class EasyPlugin extends JavaPlugin {
         registrableSet.forEach(IRegistrable::close);
     }
 
-    protected Binder getBinder() {
-        return new Binder();
+    protected BindManager getBinder() {
+        return new BindManager();
     }
 
     protected void registerInstance(IRegistrable registrable) {
