@@ -18,7 +18,7 @@ shadowJar {
 
     relocate 'me.tassu.util', 'me.tassu.easy.util'
     relocate 'ninja.leaping.configurate', 'me.tassu.easy.lib.configurate'
-    //relocate 'com.google', 'me.tassu.easy.google'
+    relocate 'com.google', 'me.tassu.easy.google'
     relocate 'com.typesafe.config', 'me.tassu.easy.lib.typesafe'
     relocate 'co.aikar', 'me.tassu.easy.lib.aikar'
 }

@@ -107,7 +107,6 @@ public abstract class EasyPlugin extends JavaPlugin {
     protected void registerClass(Class<? extends IRegistrable> clazz) {
         if (!clazz.isAnnotationPresent(Singleton.class)) {
             log.error("Tried to register {} but it is not a singleton.", clazz.getName());
-            log.error("Expected Singleton class is {}", Singleton.class.getName());
             return;
         }
 

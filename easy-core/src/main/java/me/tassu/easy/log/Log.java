@@ -62,14 +62,7 @@ public class Log {
     }
 
     public void error(String string, Throwable throwable) {
-        error(string);
-
-        StringWriter writer = new StringWriter();
-        throwable.printStackTrace(new PrintWriter(writer));
-
-        Arrays.asList(writer.toString()
-                .split(System.lineSeparator()))
-                .forEach(this::error);
+        logger.error(string, throwable);
     }
 
     public void error(String string, StackTraceElement[] trace) {
