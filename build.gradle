@@ -1,106 +1,121 @@
 buildscript {
     repositories {
-        maven {
-            url 'https://plugins.gradle.org/m2'
-        }
+        jcenter()
     }
-
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.2'
-        classpath 'gradle.plugin.net.minecrell:licenser:0.4.1'
-        classpath "io.franzbecker:gradle-lombok:1.14"
+        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.2"
     }
+}
+
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'io.franzbecker.gradle-lombok' version '1.14'
+    id 'com.github.johnrengelman.shadow' version '2.0.4'
+    id 'net.minecrell.licenser' version '0.4.1'
 }
 
 group 'me.tassu'
 version '1.0.0'
 
-defaultTasks 'licenseFormat', 'build', 'shadowJar'
+defaultTasks 'licenseFormat', 'build'
 
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'maven-publish'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
-    apply plugin: 'com.github.johnrengelman.shadow'
-    apply plugin: 'net.minecrell.licenser'
-    apply plugin: "io.franzbecker.gradle-lombok"
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
 
-    group = rootProject.group
-    version = rootProject.version
+jar {
+    from 'LICENSE'
+}
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+license {
+    header = project.file('LICENSE')
+    include '**/*.java'
+    newLine = true
+}
 
-    tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://maven.tassu.me/'
+        name 'tassu-repo'
     }
-
-    jar {
-        from '../LICENSE'
+    maven {
+        name 'sponge'
+        url 'https://repo.spongepowered.org/maven'
     }
+    maven {
+        name 'paper-repo'
+        url 'https://papermc.io/repo/repository/maven-public'
+    }
+    maven {
+        name 'sonatype'
+        url 'https://oss.sonatype.org/content/groups/public/'
+    }
+    maven {
+        name 'jitpack'
+        url 'https://jitpack.io'
+    }
+    maven {
+        name 'aikar-repo'
+        url "https://ci.emc.gs/nexus/content/groups/aikar/"
+    }
+}
 
-    license {
-        header = rootProject.file('LICENSE')
-        include '**/*.java'
-        newLine = true
+build.dependsOn(shadowJar)
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier = 'javadoc'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId = 'easy'
+
+            artifact sourcesJar
+            artifact javadocJar
+
+            from components.java
+        }
     }
 
     repositories {
-        mavenCentral()
-        maven {
-            url 'https://maven.tassu.me/'
-            name 'tassu-repo'
-        }
-        maven {
-            name 'sponge'
-            url 'https://repo.spongepowered.org/maven'
-        }
-        maven {
-            name 'paper-repo'
-            url 'https://papermc.io/repo/repository/maven-public'
-        }
-        maven {
-            name 'sonatype'
-            url 'https://oss.sonatype.org/content/groups/public/'
-        }
-        maven {
-            name 'jitpack'
-            url 'https://jitpack.io'
-        }
-        maven {
-            name 'aikar-repo'
-            url "https://ci.emc.gs/nexus/content/groups/aikar/"
-        }
-    }
-
-    build.dependsOn(shadowJar)
-
-    shadowJar {
-        archiveName = "${project.name}-${project.version}.jar"
-    }
-
-    task sourcesJar(type: Jar) {
-        from sourceSets.main.allJava
-        classifier = 'sources'
-    }
-
-    task javadocJar(type: Jar) {
-        from javadoc
-        classifier = 'javadoc'
-    }
-
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                artifact sourcesJar
-                artifact javadocJar
-
-                from components.java
-            }
-        }
-
-        repositories {
-            maven { url "file:///home/tassu/maven" }
-        }
+        maven { url "file:///home/tassu/maven" }
     }
 }
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        expand 'pluginVersion': project.version
+        include 'plugin.yml'
+    }
+}
+
+dependencies {
+    compileOnly 'com.destroystokyo.paper:paper-api:1.13.1-R0.1-SNAPSHOT'
+
+    compile 'me.tassu.cfg:hocon:1.0.01'
+    compile 'com.google.inject:guice:4.2.0'
+    compile "co.aikar:taskchain-bukkit:3.7.1"
+}
+
+shadowJar {
+    archiveName = "easy-${project.version}.jar"
+
+    relocate 'me.tassu.util', 'me.tassu.easy.util'
+    relocate 'ninja.leaping.configurate', 'me.tassu.easy.lib.configurate'
+    relocate 'com.google', 'me.tassu.easy.google'
+    relocate 'com.typesafe.config', 'me.tassu.easy.lib.typesafe'
+    relocate 'co.aikar', 'me.tassu.easy.lib.aikar'
+}
+

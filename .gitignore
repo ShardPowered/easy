@@ -26,7 +26,7 @@ crashlytics-build.properties
 fabric.properties
 .idea/httpRequests
 .gradle
-/*/build/
+/build/
 gradle-app.setting
 !gradle-wrapper.jar
 .gradletasknamecache

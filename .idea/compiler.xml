@@ -5,10 +5,10 @@
       <profile default="true" name="Default" enabled="true" />
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="easy-core_main" target="1.8" />
+      <module name="easy-core_test" target="1.8" />
       <module name="easy-shared_main" target="1.8" />
       <module name="easy-shared_test" target="1.8" />
-      <module name="Easy_main" target="1.8" />
-      <module name="Easy_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
