@@ -63,6 +63,10 @@ public abstract class EasyPlugin extends JavaPlugin {
     @Getter
     private Set<IRegistrable> registrableSet = new HashSet<>();
 
+    protected Injector __unsafe__getInjector() {
+        return injector;
+    }
+
     @Override
     public final void onLoad() {
         injector = Guice.createInjector(

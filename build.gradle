@@ -16,7 +16,7 @@ plugins {
 }
 
 group 'me.tassu'
-version '1.0.0'
+version '1.0.1'
 
 defaultTasks 'licenseFormat', 'build'
 
@@ -110,7 +110,7 @@ dependencies {
 }
 
 shadowJar {
-    archiveName = "easy-${project.version}.jar"
+    archiveName = "Easy-${project.version}.jar"
 
     relocate 'me.tassu.util', 'me.tassu.easy.util'
     relocate 'ninja.leaping.configurate', 'me.tassu.easy.lib.configurate'
